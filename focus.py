@@ -1,6 +1,9 @@
 import soundcard as sc
 import numpy
 
+sample_rate = 48000
+duration = 5 # 5s
+
 # get a list of all speakers:
 speakers = sc.all_speakers()
 # get the current default speaker on your system:
@@ -26,12 +29,18 @@ one_mic = sc.get_microphone('2i2')
 print(default_mic)
 #<Microphone Focusrite Scarlett 2i2 (2 channels)>
 
-# record and play back one second of audio:
-data = default_mic.record(samplerate=48000, numframes=48000)
-#default_speaker.play(data/numpy.max(data), samplerate=48000)
+# record 5 seconds of audio:
+audio_data = default_mic.record(samplerate=sample_rate, numframes=duration*sample_rate)
+
 # alternatively, get a `Recorder` and `Player` object
-# and play or record continuously:
-with default_mic.recorder(samplerate=48000) as mic:
-    for _ in range(100):
-        data = mic.record(numframes=1024)
-        #sp.play(data)
+
+
+# Specify the output file name
+output_filename = "recorded_audio.txt"
+
+# Save each audio sample on a new line in the text file
+with open(output_filename, 'w') as text_file:
+    idx = 1
+    for sample in audio_data:
+        text_file.write(f"{idx, sample[0], sample[1]}\n")
+        idx += 1
