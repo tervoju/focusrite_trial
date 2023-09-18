@@ -1,5 +1,12 @@
 import soundcard as sc
 import numpy
+import datetime
+
+# Get the current timestamp
+current_time = datetime.datetime.now()
+
+# Format the timestamp as a string (you can customize the format)
+timestamp_str = current_time.strftime("%Y-%m-%d_%H-%M-%S")
 
 sample_rate = 48000
 duration = 5 # 5s
@@ -32,11 +39,9 @@ print(default_mic)
 # record 5 seconds of audio:
 audio_data = default_mic.record(samplerate=sample_rate, numframes=duration*sample_rate)
 
-# alternatively, get a `Recorder` and `Player` object
-
-
 # Specify the output file name
-output_filename = "recorded_audio.txt"
+output_filename = f"file_{timestamp_str}.txt"  # Change "file" to your desired prefix and ".txt" to your desired file extension
+
 
 # Save each audio sample on a new line in the text file
 with open(output_filename, 'w') as text_file:
